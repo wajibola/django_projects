@@ -8,6 +8,6 @@ class TaskForm(forms.ModelForm):
         model = Task
         fields = ['name', 'description', 'status', 'due_date', 'category_name']
 
-    def clean_category_name(self):
-        name = self.cleaned_data['category_name']
-        return name
+    # def clean_category_name(self):
+    #     name = self.cleaned_data['category_name']
+    #     return name

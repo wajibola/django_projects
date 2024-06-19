@@ -27,6 +27,7 @@ def registration_request(request):
         password = request.POST['password']
         first_name = request.POST['firstname']
         last_name = request.POST['lastname']
+        email = request.POST['email']
         user_exist = False
         try:
             User.objects.get(username=username)
@@ -35,7 +36,7 @@ def registration_request(request):
             logger.error("New user")
         if not user_exist:
             user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,
-                                            password=password)
+                                            password=password, email=email)
             login(request, user)
             return redirect("todolist:index")
         else:
@@ -83,7 +84,7 @@ def create_task(request):
         #     return render(request, 'todolist/create_task_bootstrap.html')
         
         # Check if a task with the same name already exists
-        if Task.objects.filter(name=name, category__name=category_name).exists():
+        if Task.objects.filter(user=request.user, name=name, category__name=category_name).exists():
             messages.error(request, f"A task with name '{name}' and category '{category_name}' already exists.")
             return render(request, 'todolist/create_task_bootstrap.html')
 
