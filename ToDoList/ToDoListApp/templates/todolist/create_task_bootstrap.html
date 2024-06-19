@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <title>Create Task</title>
+</head>
+<body>
+
+    <!-- Include Navigation bar -->
+    {% include 'todolist/navigation_bar.html' %}
+
+    <!-- Page content -->
+    <div class="container mt-4">
+        {% if messages %}
+            <div class="alert alert-dismissible fade show" role="alert">
+                {% for message in messages %}
+                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+
+        <form action="{% url 'todolist:create_task' %}" method="post">
+            {% csrf_token %}
+            <fieldset>
+                <legend>Create Task</legend>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Task Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter Task Name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Task Category</label>
+                    <select class="form-select" id="category" name="category" required>
+                        <option value="" disabled selected>Select Category</option>
+                        <option>Home</option>
+                        <option>Work-Related</option>
+                        <option>Personal</option>
+                        <option>Health & Fitness</option>
+                        <option>Finance</option>
+                        <option>Social</option>
+                        <option>Educational</option>
+                        <option>Errands</option>
+                        <option>Goals</option>
+                        <option>Miscellaneous</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Task Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter Task Description" maxlength="300" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="duedate" class="form-label">Due Date</label>
+                    <input class="form-control" type="datetime-local" id="duedate" name="duedate" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </fieldset>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+
+</body>
+</html>

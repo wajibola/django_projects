@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>ToDo List</title>
+</head>
+<body>
+    <!-- Include Navigation bar -->
+    {% include 'todolist/navigation_bar.html' %}
+    
+    <!-- Page content -->
+    <div class="container mt-4">
+        {% if user.is_authenticated %}
+            <h2>{{ user.first_name }} Task List{% if category_name %} in category {{ category_name }}{% endif %}</h2>
+            
+            {% if task_list %}
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    {% for task in task_list %}
+                    <div class="col">
+                        <div class="card h-100">
+                            <a href="{% url 'todolist:task_details' pk=task.id %}" class="text-decoration-none">
+                                <div class="card-body bg-light">
+                                    <h5 class="card-title">{{ task.name }}</h5>
+                                    <p class="card-text">{{ task.description }}</p>
+                                    <p class="card-text"><small class="text-muted">Status: {{ task.status }}</small></p>
+                                    <p class="card-text"><small class="text-muted">Due: {{ task.due_date }}</small></p>
+                                </div>
+                            </a>
+                            <div class="card-footer">
+                                <a href="#" class="btn btn-light">Pending</a>
+                                <a href="#" class="btn btn-warning">In Progress</a>
+                                <a href="#" class="btn btn-success">Completed</a>
+                                <a href="{% url 'todolist:delete_task' task_id=task.id %}" class="btn btn-danger">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {% if category_name %}
+                    <p class="text-center">No tasks found in this category!</p>
+                {% else %}
+                    <p class="text-center">No tasks created yet!</p>
+                {% endif %}
+            {% endif %}
+        {% else %}
+            <div class="row justify-content-center align-items-center full-height">
+                <div class="col-12 text-center">
+                    <p class="h2">Welcome To Task APP</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
